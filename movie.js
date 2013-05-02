@@ -1,23 +1,24 @@
 
 
 
-$(document).ready(function(event){
+$(document).ready(function(){
   $('#results-list').on('click', 'li', function(){
-    var selectionBox = $('#selected-result');
     var imdbID = $(this).attr('data-id');
     $.ajax({
-      url: 'http://www.omdp.com/?i=' + imdbID,
+      url: 'http://www.omdbapi.com/?i=' + imdbID,
       method: 'get',
-      dataType: 'jsonp',
+      dataType: 'json',
       success: function(movie){
         var movieTitle = movie['Title'];
         var movieYear = movie['Year'];
-        var movieRuntime = movie['Year'];
+        var movieRuntime = movie['Runtime'];
         var movieGenre = movie['Genre'];
         var movieDirector = movie['Director'];
         var moviePlot = movie['Plot'];
         var selectionBox = $('#selected-result');
-        selectionBox.append(movieTitle, movieYear, movieRuntime, movieGenre, movieDirector, moviePlot);
+        var listElements = $('<li><h3></h3></li>');
+        listElements.append(movieTitle);
+        selectionBox.append(listElements);
       }
     });
   });
@@ -30,7 +31,7 @@ $(document).ready(function(event){
     //var selectionBox = $('#selected-result');
     var searchResults;
     //var selectedResult;
-    var imdbID;
+    var imdb;
     $.ajax({
       url: 'http://www.omdbapi.com/?s=' + searchQuery,
       method: 'get',
@@ -38,15 +39,15 @@ $(document).ready(function(event){
       success: function(omdb){
         $('#input-box').html(' ');
         searchResults = omdb.Search;
-        console.log(omdb.Search);
-        for(i=0; i<=searchResults.length; i+=1){
-          var listItem = $("<li></li>");
+        for(i=0; i<searchResults.length; i+=1){
           //var listLink = $("<a href=''></a>");
           var title = searchResults[i]['Title'];
           var year = searchResults[i]['Year'];
-          imdbID = searchResults[i]['imdbID'];
+          imdb = searchResults[i]['imdbID'];
+          var listItem = $('<li data-id="' + imdb + '"></li>');
+
           //listLink.append(year, title);
-          listItem.append(year, title);
+          listItem.append(year, ' : ', title);
           resultsList.append(listItem);
           //http://www.omdbapi.com/?i=" + imdbID + "'></a>
         }
