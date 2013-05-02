@@ -15,10 +15,16 @@ $(document).ready(function(){
         var movieGenre = movie['Genre'];
         var movieDirector = movie['Director'];
         var moviePlot = movie['Plot'];
-        var selectionBox = $('#selected-result');
+        var moviePoster = movie['Poster'];
+        var selectionBox = $('#selected');
+        var selectionBody = $('#selected-result');
         var listElements = $('<li><h3></h3></li>');
-        listElements.append(movieTitle);
-        selectionBox.append(listElements);
+        //listElements.append(movieTitle);
+        selectionBody.append('<span><h2>' + movieTitle + ' :: ' + movieYear + '</h2></span>');
+        selectionBox.append('<span><h5>Runtime: ' + movieRuntime + '</h5></span>');
+        selectionBox.append('<span><h5>Director: ' + movieDirector + '</h5></span>');
+        selectionBox.append('<span><h5>Plot: ' + moviePlot + '</h5></span>');
+        selectionBox.append('<span><img src="' + moviePoster + '""></span>');
       }
     });
   });
@@ -40,14 +46,14 @@ $(document).ready(function(){
         $('#input-box').html(' ');
         searchResults = omdb.Search;
         for(i=0; i<searchResults.length; i+=1){
-          //var listLink = $("<a href=''></a>");
+          var listLink = $("<a href='#'></a>");
           var title = searchResults[i]['Title'];
           var year = searchResults[i]['Year'];
           imdb = searchResults[i]['imdbID'];
           var listItem = $('<li data-id="' + imdb + '"></li>');
 
-          //listLink.append(year, title);
-          listItem.append(year, ' : ', title);
+          listLink.append(year, " : ", title);
+          listItem.append(listLink);
           resultsList.append(listItem);
           //http://www.omdbapi.com/?i=" + imdbID + "'></a>
         }
